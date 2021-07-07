@@ -1,0 +1,15 @@
+#set($filterSingleSelection = $pageParameters.SingelSelection.values) 
+#set($filterInputQuery = $pageParameters.SingelSelection.values) 
+#set($sortingFilter = "")
+#set($projectId = $page.getReference.projectId())
+#set($strQuery = "project.id:$projectId AND type:requirement")
+#foreach ($selection in $filterSingleSelection) 
+#set($sortingFilter = $selection)
+#end
+#set($finalQuery = "")
+#if($filterInputQuery!="")
+ #set($finalQuery = "$strQuery AND $filterInputQuery")
+#else
+ #set($finalQuery = $strQuery)
+#end
+$strQuery
