@@ -1,0 +1,62 @@
+## Prepare Parameters
+#set($mapC=$objectFactory.newMap())
+## Get the Document ID And Space
+#if (!$pageParameters.document.singleValue.id )
+  #set($rQuery = "project.id:$page.reference.projectId")
+#else
+  #set($document=$pageParameters.document.singleValue.id.split(" / "))
+  #set($space=$lists.get($document,0))
+  #set($id=$lists.get($document,1))
+## Build the Query in the context of given project
+#set($rQuery = "project.id:$page.reference.projectId AND moduleName:$id AND space.id:$space")
+#end
+
+########### Macro   ##########
+## Script
+#foreach($item in $transaction.documents().search().query($rQuery).sort("id"))
+ 
+#set ($first=0)
+#foreach ($comment in $item.getOldApi().getComments())
+   
+
+#if ($first==0)
+<h1> Selected Document is : $item.render().withLinks().withIcon(false)</h1>
+
+<table width=99% cellspacing="0" cellpadding="4" style="border:1px solid black;border-collapse:collapse;" rules="all">
+<tr>
+  <td style="background-color:lightgrey" align="center">Comment</td>
+  <td style="background-color:lightgrey" align="center">Status</td>
+  <td style="background-color:lightgrey" align="center">Author</td>
+   <td style="background-color:lightgrey" align="center">Date created</td>
+</tr>
+#set ($first=1)
+#end
+ 
+
+<tr><td>$comment.getText().getContent()</td>
+#if ($comment.isResolvedComment()==true)
+<td bgcolor="green">Resolved
+#else
+<td bgcolor="red">Unresolved
+#end
+</td>
+<td>$comment.getAuthor().getName()</td>
+<td>$comment.getCreated()</td>
+</tr>
+#end
+</table>
+</br>
+</br>
+</br>
+<table width=99% cellspacing="0" cellpadding="4" style="border:1px solid black;border-collapse:collapse;" rules="all">
+ <tr>
+ <td> Workitem ID </td>
+ <td> Comment Information </td>
+ <tr>
+<table>
+#end
+
+
+
+
+        
