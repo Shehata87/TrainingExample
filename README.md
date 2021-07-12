@@ -1,5 +1,4 @@
 # TrainingExample
 
-Import example
 
-Umgesetzt SR
+Schulung Teil 4 
